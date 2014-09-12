@@ -1,9 +1,7 @@
 package streams.auction;
 
 import java.math.BigDecimal;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Created by prozorov on 11/09/14.
@@ -14,12 +12,12 @@ public class AuctionEmulator {
     {
 
         User[] users = new User[]{
-                new User(0, "user1", "user1@gmail.com", true),
-                new User(1, "user2", "user2@gmail.com", true),
-                new User(2, "user3", "user3@gmail.com", true)
+                new User(0, "Gomer", "gomer@springfield.com", true),
+                new User(1, "Lisa", "lisa@springfield.com", true),
+                new User(2, "Bart", "bart@springfield.com", true)
         };
 
-        int maximumIncrease = 20;
+        int maximumAmount = 3000;
 
         ProductsRepository productsRepository = new ProductsRepository();
         BidService bidService = new BidService(productsRepository);
@@ -27,27 +25,47 @@ public class AuctionEmulator {
 
         Timer timer = new Timer();
 
-        TimerTask user1TimerTask = new TimerTask() {
+        TimerTask winnerTask = new TimerTask() {
             @Override
             public void run() {
-                Product product = productsRepository.getRandomProduct();
-                BigDecimal amount = BigDecimal.valueOf(product.reservedPrice.longValue() + new Random().nextInt(maximumIncrease));
-                String result = bidService.AddBid(product, users[0],amount,2);
-                System.out.println(users[0].name + " " + result );
+
+                List<Bid> winnersBids = bidService.getBids(c->c.isWinning);
+
+                System.out.println("***************************************");
+
+                for(Iterator<Bid> bids = winnersBids.iterator(); bids.hasNext(); ) {
+                    Bid winnerBid = bids.next();
+
+                    System.out.println("User: " + winnerBid.user.name + " won product: " + winnerBid.product.title + " with amount: " + winnerBid.amount);
+                }
+
+                System.out.println("***************************************");
             }
         };
 
-        timer.schedule(user1TimerTask,1000);
+        timer.schedule(winnerTask, 11000);
+
+        for(int i = 1; i < 100; i++)
+        {
+            TimerTask userTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    int userIndex = new Random().nextInt(3);
+                    Product product = productsRepository.getRandomProduct();
+                    BigDecimal amount = BigDecimal.valueOf(new Random().nextInt(maximumAmount));
+                    String result = bidService.AddBid(product, users[userIndex],amount,2);
+                    System.out.println(users[userIndex].name + " " + result );
+                }
+            };
+
+            timer.schedule(userTimerTask, new Random().nextInt(10000));
+        }
 
         boolean working = true;
         while (working)
         {
             timer.purge();
         }
-
-
-
-
 
     }
 

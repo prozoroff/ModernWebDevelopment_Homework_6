@@ -22,6 +22,7 @@ public class Product {
     {
         this.id = id;
         this.thumb = thumb;
+        this.title = title;
         this.description = description;
         this.quantity = quantity;
         this.auctionEndTime = auctionEndTime;

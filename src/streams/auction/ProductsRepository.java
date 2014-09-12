@@ -18,9 +18,9 @@ public class ProductsRepository {
     {
         products = new ArrayList<Product>();
 
-        products.add( new Product(0, "title1", "thumb1", "description1", 10, LocalDateTime.now(),5, BigDecimal.valueOf(100), BigDecimal.valueOf(1000)));
-        products.add( new Product(0, "title2", "thumb2", "description2", 15, LocalDateTime.now(),5, BigDecimal.valueOf(100), BigDecimal.valueOf(1000)));
-        products.add( new Product(0, "title3", "thumb3", "description3", 7, LocalDateTime.now(),5, BigDecimal.valueOf(100), BigDecimal.valueOf(1000)));
+        products.add( new Product(0, "bicycle", "thumb1", "Jamis", 10, LocalDateTime.now(),5, BigDecimal.valueOf(1000), BigDecimal.valueOf(1000)));
+        products.add( new Product(1, "motorbike", "thumb2", "Honda", 15, LocalDateTime.now(),5, BigDecimal.valueOf(1500), BigDecimal.valueOf(1500)));
+        products.add( new Product(2, "car", "thumb3", "Landrover", 7, LocalDateTime.now(),5, BigDecimal.valueOf(2000), BigDecimal.valueOf(2000)));
     }
 
 
@@ -42,7 +42,5 @@ public class ProductsRepository {
         int index = products.indexOf(oldProduct);
 
         products.get(index).reservedPrice = amount;
-
     }
-
 }
